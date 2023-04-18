@@ -7,7 +7,7 @@ export default async function middleware(req) {
     const userAgent = req.headers.get('user-agent')
     if (checkCrawler(userAgent)) {
         const data = await getData()
-        const html = generateHTML(data.title, data.description, data.imageUrl, url)
+        const html = generateHTML(data.title, data.description, data.imageUrl, req.url)
         let response = new Response(html)
         response.headers.set("Content-Type", "text/html")
         return response
@@ -21,7 +21,7 @@ const checkCrawler = (userAgent) => {
 }
 
 
-const getData = async () => {
+const getData = async (url) => {
     let req = await fetch('https://dummyjson.com/products/1', { method: 'GET' })
     let data = await req.json()
 
